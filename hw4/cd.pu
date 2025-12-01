@@ -1,0 +1,45 @@
+@startuml
+
+
+class User {
+    - userId : String
+    - name : String
+    - borrowedCount : int
+    - isOverdue : boolean
+    + login() : boolean
+    + getLoanStatus() : String
+}
+
+class Book {
+    - isbn : String
+    - title : String
+    - author : String
+    - isBorrowe : boolean
+    - dueDate : String
+    + updateStatus(newStatus : boolean) : void
+    + isAvailable() : boolean
+}
+
+class Scanner {
+    + scanCard() : String
+    + scanBook() : String
+}
+
+class BorrowingSystem {
+    + verifyUser(userId : String) : boolean
+    + processBorrow(userId : String, bookId : String) : void
+    + checkPermission(user : User) : boolean
+}
+
+
+Scanner "1" --> "1" BorrowingSystem : 傳送資料
+
+
+BorrowingSystem "1" --> "1..*" User : 驗證與查詢
+
+
+BorrowingSystem "1" --> "0..*" Book : 查詢與更新狀態
+
+User "1" ..> "0..*" Book : 借閱
+
+@enduml
