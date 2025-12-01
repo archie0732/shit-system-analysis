@@ -1,0 +1,47 @@
+@startuml
+autonumber
+
+actor "小明 (Actor)" as Ming
+participant "Scanner" as Scan
+participant "BorrowingSystem" as Sys
+participant "User" as U
+participant "Book" as B
+
+Ming -> Scan : 1. 放入書籍
+activate Scan
+
+Scan -> Scan : 2. scanBook()
+Scan -> Sys : 3. 傳送書籍 ID
+deactivate Scan
+
+activate Sys
+
+Sys -> B : 4. isAvailable()
+activate B
+B --> Sys : 5. true = (在庫)
+deactivate B
+
+
+Sys -> U : 6. getLoanStatus()  (檢查isOverdue)
+activate U
+U --> Sys : 7. 回傳狀態 (正常/無逾期)
+deactivate U
+
+Sys -> Sys : 8. checkPermission()
+
+alt 權限與書籍皆符合
+    Sys -> Sys : 9. processBorrow(userId, bookId)
+    
+    Sys -> B : 10. updateStatus(true)
+    activate B
+    B --> Sys : 更新完成
+    deactivate B
+    
+    Sys --> Ming : 12. 顯示借閱成功
+else 檢查失敗
+    Sys --> Ming : 13. 顯示錯誤訊息
+end
+
+deactivate Sys
+
+@enduml
