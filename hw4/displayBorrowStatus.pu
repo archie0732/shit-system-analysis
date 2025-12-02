@@ -1,0 +1,46 @@
+@startuml
+autonumber
+
+actor "小明" as Ming
+participant "Scanner" as Scan
+participant "BorrowingSystem" as Sys
+participant "User" as U
+participant "Book" as B
+
+Note over Ming, B: Use Case: 顯示借閱資料 (Display & Update Data)
+
+Ming -> Scan : 放入書籍
+activate Scan
+Scan -> Sys : 傳送書籍 ID
+deactivate Scan
+
+activate Sys
+
+Sys -> B : isAvailable()
+activate B
+B --> Sys : true (在庫)
+deactivate B
+
+Sys -> U : getLoanStatus() / 檢查 isOverdue
+activate U
+U --> Sys : 回傳: 正常 (無逾期)
+deactivate U
+
+Sys -> Sys : checkPermission() (Pass)
+
+
+Note right of Sys: --- 檢查通過，進入資料更新階段 ---
+
+Sys -> B : updateStatus(isBorrowed = true)
+activate B
+B --> Sys : 更新完成
+deactivate B
+
+
+Sys -> Sys : calculateDueDate()
+
+Sys --> Ming : 顯示: 借閱成功 (還書期限: 2025/12/25)
+
+deactivate Sys
+
+@enduml

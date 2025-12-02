@@ -1,0 +1,31 @@
+@startuml
+autonumber
+
+actor "小明" as Ming
+participant "Scanner" as Scan
+participant "BorrowingSystem" as Sys
+participant "User" as U
+
+Note over Ming, U: Use Case: 登入 (Login)
+
+Ming -> Scan : 插入借書卡
+activate Scan
+Scan -> Scan : scanCard()
+Scan -> Sys : 傳送卡號 (userId)
+deactivate Scan
+
+activate Sys
+Sys -> U : login(password/id)
+activate U
+' 這裡假設驗證邏輯在 User 或 System 都可以，通常查資料庫
+U --> Sys : true (驗證成功)
+deactivate U
+
+alt 登入成功
+    Sys --> Ming : 顯示歡迎畫面
+else 登入失敗
+    Sys --> Ming : 顯示錯誤與重試
+end
+
+deactivate Sys
+@enduml

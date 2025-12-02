@@ -1,0 +1,32 @@
+erDiagram
+    Customer ||--o{ Order : "places (下訂單)"
+    Store ||--o{ Order : "receives (接收)"
+    Item ||--o{ Order : "included_in (包含)"
+    
+
+    Customer {
+        int customer_id PK
+        string customer_name
+        string customer_gender
+    }
+
+    Store {
+        int store_id PK
+        string store_name
+        string address
+    }
+
+    Item {
+        int item_id PK
+        string item_name
+        int item_price "參考定價"
+    }
+
+    Order {
+        int order_id PK
+        int customer_id FK
+        int item_id FK
+        int store_id FK
+        int price 
+        int count 
+    }

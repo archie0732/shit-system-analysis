@@ -1,0 +1,39 @@
+@startuml
+autonumber
+
+actor "小明" as Ming
+participant "Scanner" as Scan
+participant "BorrowingSystem" as Sys
+participant "User" as U
+
+Note over Ming, U: Use Case: 確認借閱權限 (Check Permission)
+
+Ming -> Scan : 插入借書卡
+activate Scan
+Scan -> Scan : scanCard()
+Scan -> Sys : 傳送卡號 (userId)
+deactivate Scan
+
+activate Sys
+
+' 1. 先確認這個人是誰 (對應 CD 圖的 verifyUser)
+Sys -> Sys : verifyUser(userId)
+
+' 2. 再檢查他的狀態 (這才是這個 Use Case 的重點)
+Sys -> U : getLoanStatus() / 檢查 isOverdue
+activate U
+U --> Sys : 回傳: false (無逾期)
+deactivate U
+
+' 3. 系統進行邏輯判斷
+Sys -> Sys : checkPermission()
+
+' 4. 根據結果顯示不同畫面
+alt 符合借閱資格
+    Sys --> Ming : 顯示: 允許借閱 (顯示目前可借額度)
+else 資格不符 (有逾期 或 已達上限)
+    Sys --> Ming : 顯示: 不可借閱 (顯示原因: 有逾期書籍)
+end
+
+deactivate Sys
+@enduml
