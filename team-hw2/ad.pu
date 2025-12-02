@@ -1,0 +1,15 @@
+@startuml a
+start
+
+repeat
+    : 使用者輸入指令
+
+    if () then (飲食照片分析)
+        : 系統接收照片;
+        : 系統分析照片內容;
+    else (文字諮詢)
+        : 系統接收文字訊息;
+        : 系統分析文字內容;
+        endif
+
+repeat while () is (指令錯誤) not (指令正確)

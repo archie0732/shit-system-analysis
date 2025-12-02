@@ -1,0 +1,51 @@
+@startuml
+title 健康飲食 Discord 機器人 - 正式 UML 版 (No Text in Diamonds)
+
+|使用者|
+start
+:開啟 Discord 並喚醒健康飲食 Bot;
+:輸入指令;
+|健康飲食 Bot|
+
+:分析指令類型;
+if () then
+  :設定定時提醒;
+  :接收提醒時間與頻率;
+  :驗證輸入格式;
+  if () then
+    :儲存設定至資料庫;
+    :回覆「提醒設定完成」;
+  else
+    :回覆「格式錯誤，請重新輸入」;
+  endif
+
+elseif ()
+  :查看指令與使用說明;
+  :回傳功能列表;
+
+elseif ()
+  :諮詢飲食建議;
+  fork
+    :傳送圖片至生成式 AI;
+    |生成式 AI|
+    :進行分析並回傳建議;
+  fork again
+    |後端伺服器|
+    :記錄使用者查詢;
+  end fork
+  |健康飲食 Bot|
+  :整合分析結果回傳給使用者;
+
+else
+  :顯示錯誤訊息;
+endif
+
+|使用者|
+:接收結果;
+:是否繼續操作?;
+if () then (是)
+  :返回主選單;
+else
+  stop
+endif
+@enduml
